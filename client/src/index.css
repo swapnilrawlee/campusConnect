@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
  /* for mobile responsiveness */
  @media (max-width: 768px) {
     .main-container{
