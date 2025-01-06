@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstamce from "../utils/axiosInstance";
 
-const HodLogin = () => {
+const AdminLogin = () => {
   const [uniqueId, setUniqueId] = useState(""); // Unique ID state
   const [password, setPassword] = useState(""); // Password state
+
   const navigate = useNavigate();
+
+  const adminLoginApi = async () => {
+    try {
+      const response = await axiosInstamce.post("/auth/adminlogin", { uniqueId, password }); 
+      if (response.status === 200) {
+        navigate('/admin');
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ uniqueId, password }); // Log the unique ID and password
+    adminLoginApi();
   };
 
   return (
@@ -19,7 +33,7 @@ const HodLogin = () => {
     }}>
       <div className="bg-white   rounded-lg shadow-2xl shadow-black p-6 sm:w-1/4 flex flex-col gap-4 items-center justify-center">
         <i className="ri-arrow-left-line flex items-start w-full justify-start" onClick={() => navigate("/welcomePage")}></i>
-        <h1 className="text-2xl">HOD Login</h1>
+        <h1 className="text-2xl">Admin Login</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           
           <div className="relative w-full">
@@ -36,6 +50,8 @@ const HodLogin = () => {
               required
             />
           </div>
+          
+       
 
           <div className="relative w-full">
             <i className="ri-lock-line absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
@@ -63,4 +79,4 @@ const HodLogin = () => {
   );
 };
 
-export default HodLogin;
+export default AdminLogin;
