@@ -1,16 +1,14 @@
-const pool = require("../config/mysqlConfig");
+const {pool} = require("../config/mysqlConfig");
 
 // Helper function for database queries
 // Helper function for database queries
 const executeQuery = async (query, params, res, successMessage) => {
     const connection = await pool.getConnection(); // Get a connection from the pool
     try {
-        console.log("Executing Query: ", query);
-        console.log("With Params: ", params);
+       
 
         const [result] = await connection.execute(query, params); // Execute the query
 
-        console.log("Query Result: ", result);
 
         if (result.affectedRows > 0) {
             // Retrieve the studentid (assuming it's the auto-increment field)

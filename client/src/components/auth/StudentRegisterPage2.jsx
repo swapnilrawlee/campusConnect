@@ -75,6 +75,14 @@ const studentId = sessionStorage.getItem("studentid");
         response3.status === 200
       ) {
         alert("Successfully created");
+        academicAchievements="";
+        extracurricularActivities="";
+        certifications="";
+        emergencyContactName="";
+        emergencyContactRelation="";
+        emergencyContactNumber="";
+        languagesKnown="";
+        skills="";
       } else {
         alert("Error: One or more responses failed.");
       }

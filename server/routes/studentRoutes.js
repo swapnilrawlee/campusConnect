@@ -9,3 +9,4 @@ Router.post('/skillsandlanguages',skillsandlanguages);
 Router.post('/emergencycontact',emergencycontact);
 Router.get('/studentfulldetail',studentfulldetail);
 
+module.exports = Router;
