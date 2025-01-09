@@ -8,6 +8,7 @@ const StudentRegisterPage1 = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -28,10 +29,9 @@ const StudentRegisterPage1 = () => {
     course &&
     yearOfStudy &&
     currentSemester &&
-    permanentAddress&&
+    permanentAddress &&
     enrollmentYear;
 
-    
   const handleNext = () => {
     const formData = {
       rollNumber,
@@ -46,17 +46,21 @@ const StudentRegisterPage1 = () => {
       currentSemester,
       enrollmentYear,
       permanentAddress,
+      password,
     };
     localStorage.setItem("formDataPage1", JSON.stringify(formData)); // Save to localStorage
     navigate("/admin/StudentRegisterPage2"); // Navigate to the next page
   };
 
   return (
-    <div className="w-screen min-h-screen flex justify-center items-center  sm:bg-contain bg-cover"  style={{
-      backgroundImage:
-        "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
-    }}>
-      <div className="sm:w-2/3 sm:bg-white m-auto  p-10 gap-4 rounded-lg shadow-lg shadow-black flex flex-col items-center">
+    <div
+      className="w-screen min-h-screen flex justify-center items-center  sm:bg-contain bg-cover"
+      style={{
+        backgroundImage:
+          "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
+      }}
+    >
+      <div className="sm:w-[80vw] sm:bg-white m-auto  p-10 gap-4 rounded-lg shadow-lg shadow-black flex flex-col items-center">
         <div className="flex justify-between w-full items-center gap-4">
           <i
             className="ri-arrow-left-line"
@@ -64,7 +68,7 @@ const StudentRegisterPage1 = () => {
           ></i>
           <h1 className="text-2xl font-bold">Student Registration - Page 1</h1>
         </div>
-        <form className="flex justify-around w-full p-10 items-start gap-4 flex-col sm:flex-row">
+        <form className="flex justify-between w-full p-10 items-start gap-4 flex-col sm:flex-row">
           <div className="flex flex-col gap-2">
             <label htmlFor="RollNumber">Roll Number</label>
             <input
@@ -96,18 +100,7 @@ const StudentRegisterPage1 = () => {
               onChange={(e) => setLastName(e.target.value)}
               required
             />
-            <label htmlFor="DateOfBirth">Date of Birth</label>
-            <input
-              className=" p-2 border-2 border-black"
-              type="date"
-              name="DateOfBirth"
-              id="DateOfBirth"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-2">
+           
             <label htmlFor="Gender">Gender</label>
             <div className="flex gap-4">
               <input
@@ -138,7 +131,20 @@ const StudentRegisterPage1 = () => {
               />{" "}
               Other
             </div>
-            <label htmlFor="MobileNumber">Mobile Number</label>
+           
+          </div>
+          <div className="flex flex-col gap-2">
+          <label htmlFor="DateOfBirth">Date of Birth</label>
+            <input
+              className=" p-2 border-2 border-black"
+              type="date"
+              name="DateOfBirth"
+              id="DateOfBirth"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              required
+            />
+           <label htmlFor="MobileNumber">Mobile Number</label>
             <input
               className=" p-2 border-2 border-black"
               type="tel"
@@ -158,7 +164,7 @@ const StudentRegisterPage1 = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-              <label htmlFor="PermanentAddress">Permanent Address</label>
+            <label htmlFor="PermanentAddress">Permanent Address</label>
             <textarea
               className="p-2 border-2 border-black"
               name="PermanentAddress"
@@ -170,7 +176,6 @@ const StudentRegisterPage1 = () => {
           </div>
 
           <div className="flex flex-col gap-2 ">
-          
             <label htmlFor="Course">Course</label>
             <input
               className=" p-2 border-2 border-black"

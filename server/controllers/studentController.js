@@ -1,14 +1,17 @@
-const {pool} = require("../config/mysqlConfig");
+const  connectDB = require("../config/mysqlConfig");
+const bcrypt = require("bcrypt");
 
 // Helper function for database queries
 // Helper function for database queries
 const executeQuery = async (query, params, res, successMessage) => {
-    const connection = await pool.getConnection(); // Get a connection from the pool
-    try {
-       
+  const connection = await connectDB;
+  try {
+        console.log("Executing Query: ", query);
+        console.log("With Params: ", params);
 
         const [result] = await connection.execute(query, params); // Execute the query
 
+        console.log("Query Result: ", result);
 
         if (result.affectedRows > 0) {
             // Retrieve the studentid (assuming it's the auto-increment field)
@@ -20,21 +23,26 @@ const executeQuery = async (query, params, res, successMessage) => {
     } catch (err) {
         console.error("Database Error: ", err);
         return res.status(500).send({ error: "Internal Server Error", details: err.message });
-    } finally {
-        connection.release(); // Always release the connection back to the pool
-    }
+    } 
 };
 
   // Create student profile
-  module.exports.studentprofile = (req, res) => {
+  module.exports.studentprofile = async(req, res) => {
     const { firstName, lastName, dateOfBirth, gender, mobileNumber, email, Course, permanentAddress, rollNumber, enrollmentYear } = req.body;
   
+    const dob = new Date(dateOfBirth);
+    const dd = String(dob.getDate()).padStart(2, '0'); // Day with leading zero
+    const mm = String(dob.getMonth() + 1).padStart(2, '0'); // Month with leading zero
+    const yyyy = dob.getFullYear();
+    const plainPassword = `${dd}${mm}${yyyy}`; // Combine into `ddmmyyyy`
+    const hashedPassword = await bcrypt.hash(plainPassword, 10); // Salt rounds = 10
+
     const query = `
       INSERT INTO studentprofile 
-      (firstName, lastName, dateOfBirth, gender, mobileNumber, email, course, permanentAddress, rollNumber, enrollmentYear) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      (firstName, lastName,password, dateOfBirth, gender, mobileNumber, email, course, permanentAddress, rollNumber, enrollmentYear) 
+      VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?)`;
   
-    executeQuery(query, [firstName, lastName, dateOfBirth, gender, mobileNumber, email, Course, permanentAddress, rollNumber, enrollmentYear], res, "Student profile created successfully");
+      await  executeQuery(query, [firstName, lastName,hashedPassword, dateOfBirth, gender, mobileNumber, email, Course, permanentAddress, rollNumber, enrollmentYear], res, "Student profile created successfully");
   };
   
 // Add academic details
@@ -91,7 +99,7 @@ module.exports.studentfulldetail = (req, res) => {
     LEFT JOIN skillsandlanguages sl ON sp.studentId = sl.studentId
     WHERE sp.studentId = ?`;
 
-  pool.query(query, [studentId], (err, result) => {
+   connectDB.query(query, [studentId], (err, result) => {
     if (err) {
       console.error("Database Error: ", err);
       return res.status(500).send({ error: "Internal Server Error", details: err.message });

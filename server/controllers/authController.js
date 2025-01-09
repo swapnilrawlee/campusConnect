@@ -1,4 +1,4 @@
-const bycrypt = require('bcryptjs');
+const bycrypt = require('bcrypt');
 module.exports.adminLogin = (req,res) => {
     const {uniqueId,password} = req.body;
 

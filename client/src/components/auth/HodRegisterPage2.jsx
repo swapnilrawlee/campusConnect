@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 
 const HodRegisterPage2 = () => {
   const [department, setDepartment] = useState("");
@@ -13,23 +14,9 @@ const HodRegisterPage2 = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("formDataPage1"));
-    if (savedData) {
-      // Prefill the form fields with the saved data from page 1
-      setDepartment(savedData.department || "");
-      setDesignation(savedData.designation || "");
-      setQualification(savedData.qualification || "");
-      setSpecialization(savedData.specialization || "");
-      setExperienceYears(savedData.experienceYears || "");
-      setJoiningDate(savedData.joiningDate || "");
-      setEmergencyContactName(savedData.emergencyContactName || "");
-      setEmergencyContactNumber(savedData.emergencyContactNumber || "");
-    }
-  }, []);
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formDataPage1 = JSON.parse(localStorage.getItem("formDataPage1"));
+
     const formDataPage2 = {
       department,
       designation,
@@ -41,36 +28,61 @@ const HodRegisterPage2 = () => {
       emergencyContactNumber,
     };
 
-    const finalData = { ...formDataPage1, ...formDataPage2 };
-    console.log(finalData); // Send this data to your backend
+    // console.log(finalData); // Send this data to your backend
+
+    try {
+      // Post data to your backend
+      const response = await axiosInstance.post(
+        "/staff/staffbasicinfo",
+        formDataPage1
+      );
+      console.log(response.data.employeeID);
+      sessionStorage.setItem("employeeID", response.data.employeeID);
+      const employeeID = sessionStorage.getItem("employeeID");
+
+      const response2 = await axiosInstance.post("/staff/staffadditionalinfo", {
+        department,
+        designation,
+        qualification,
+        specialization,
+        experienceYears,
+        joiningDate,
+        emergencyContactName,
+        emergencyContactNumber,
+        employeeID,
+      });
+      console.log(response2.data);
+    } catch (error) {
+      console.log(error.message);
+    }
 
     // Clear localStorage after submission
-    localStorage.removeItem("formDataPage1");
+    // localStorage.removeItem("formDataPage1");
 
     // Navigate to a success page or next step
-    navigate("/admin/staff"); // Replace with the actual page you want to navigate to
   };
 
   return (
-    <div 
-    className="w-screen min-h-screen flex justify-center items-center  bg-cover " 
-    style={{
-      backgroundImage:
-        "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
-    }}
-  >
+    <div
+      className="w-screen min-h-screen flex justify-center items-center  bg-cover "
+      style={{
+        backgroundImage:
+          "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
+      }}
+    >
       <div className="sm:bg-white  sm:w-1/2 p-10 gap-4 rounded-lg shadow-lg flex flex-col items-center">
-      <div className="flex justify-between w-full items-center gap-4">
-
-      <i
-        className="ri-arrow-left-line text-2xl cursor-pointer hover:text-gray-600"
-        onClick={() => navigate("/admin/staff")}
-        title="Go back"
-
-        ></i>
-        <h1 className="text-2xl font-bold">Page 2: Additional Information</h1>
+        <div className="flex justify-between w-full items-center gap-4">
+          <i
+            className="ri-arrow-left-line text-2xl cursor-pointer hover:text-gray-600"
+            onClick={() => navigate("/admin/staff")}
+            title="Go back"
+          ></i>
+          <h1 className="text-2xl font-bold">Page 2: Additional Information</h1>
         </div>
-        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-4 w-full capitalize">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-4 w-full capitalize"
+        >
           <label htmlFor="Department">Department</label>
           <input
             type="text"
@@ -141,7 +153,9 @@ const HodRegisterPage2 = () => {
             required
           />
 
-          <label htmlFor="EmergencyContactNumber">Emergency Contact Number</label>
+          <label htmlFor="EmergencyContactNumber">
+            Emergency Contact Number
+          </label>
           <input
             type="tel"
             id="EmergencyContactNumber"

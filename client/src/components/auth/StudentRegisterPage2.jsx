@@ -83,6 +83,7 @@ const studentId = sessionStorage.getItem("studentid");
         emergencyContactNumber="";
         languagesKnown="";
         skills="";
+        localStorage.removeItem("formDataPage1");
       } else {
         alert("Error: One or more responses failed.");
       }
@@ -93,7 +94,6 @@ const studentId = sessionStorage.getItem("studentid");
   
 
     // Clear localStorage after submission
-    localStorage.removeItem("formDataPage1");
   };
 
   return (

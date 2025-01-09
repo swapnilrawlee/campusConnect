@@ -45,7 +45,7 @@ const HodRegisterPage1 = () => {
           "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
       }}
     >
-      <div className="sm:bg-white sm:w-1/2 p-10 gap-4 rounded-lg shadow-lg flex flex-col items-center">
+      <div className="sm:bg-white sm:w-[70vw] p-10 gap-4 rounded-lg shadow-lg flex flex-col items-center">
         <div className="flex justify-between w-full items-center gap-4">
           <i
             className="ri-arrow-left-line text-2xl cursor-pointer hover:text-gray-600"
@@ -57,7 +57,7 @@ const HodRegisterPage1 = () => {
         </div>
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="flex justify-around w-full p-10 sm:flex-row flex-col items-start gap-4 capitalize"
+          className="flex justify-evenly w-full p-10 sm:flex-row flex-col items-start gap-4 capitalize"
         >
           <div className="flex flex-col gap-4">
             <select
@@ -161,7 +161,7 @@ const HodRegisterPage1 = () => {
                   ? "bg-blue-500 hover:bg-blue-700"
                   : "bg-gray-400 cursor-not-allowed"
               } text-white font-bold py-2 px-4 rounded-lg`}
-              // disabled={!isFormValid}
+              disabled={!isFormValid}
             >
               Next
             </button>
