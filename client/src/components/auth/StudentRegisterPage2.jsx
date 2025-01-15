@@ -75,14 +75,16 @@ const studentId = sessionStorage.getItem("studentid");
         response3.status === 200
       ) {
         alert("Successfully created");
-        academicAchievements="";
-        extracurricularActivities="";
-        certifications="";
-        emergencyContactName="";
-        emergencyContactRelation="";
-        emergencyContactNumber="";
-        languagesKnown="";
-        skills="";
+        setAcademicAchievements("");
+        setExtracurricularActivities("");
+        setCertifications("");
+        setEmergencyContactName("");
+        setEmergencyContactRelation("");
+        setEmergencyContactNumber("");
+        setLanguagesKnown("");
+        setSkills("");
+
+        
         localStorage.removeItem("formDataPage1");
       } else {
         alert("Error: One or more responses failed.");

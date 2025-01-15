@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HodRegister = () => {
+const TeacherHomepage = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const HodRegister = () => {
   )
 }
 
-export default HodRegister
+export default TeacherHomepage

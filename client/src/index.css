@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* Custom styles to increase cell size */
+.react-calendar__tile {
+    height: 60px; /* Increase height */
+    width: auto;  /* Increase width */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px; /* Space inside the cell */
+    font-size: 14px; /* Adjust font size if needed */
+  }
+  
+  .react-calendar__tile:active {
+    background-color: #e0e0e0; /* Light grey when clicked */
+  }
+  
  /* for mobile responsiveness */
  @media (max-width: 768px) {
     .main-container{

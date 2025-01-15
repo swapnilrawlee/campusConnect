@@ -1,7 +1,11 @@
 const  connectDB  = require("../config/mysqlConfig");
 
 const bcrypt = require("bcrypt");
-
+const fetchQuery = async (query, params = []) => {
+    const connection = await connectDB;
+    const [result] = await connection.execute(query, params);
+    return result;
+  };
 
 const executeQuery = async (query, params, res, successMessage,extradata) => {
     const connection = await connectDB;
@@ -38,6 +42,9 @@ module.exports.staffbasicinfo = (req, res) => {
   const yyyy = date.getFullYear();
   const plainPassword = `${dd}${mm}${yyyy}`; // Combine into `ddmmyyyy`
   const hashedPassword = bcrypt.hashSync(plainPassword, 10); // Salt rounds = 10
+  console.log(plainPassword);
+  console.log(hashedPassword);
+  
 
 
   const query = `
@@ -118,3 +125,48 @@ module.exports.staffadditionalinfo = (req, res) => {
         "Staff additional info created successfully"
     );
 };
+
+// Fetch full details of a staff member
+module.exports.staffFullDetails = async (req, res) => {
+    const { employeeID } = req.body;
+  
+    if (!employeeID) {
+      return res.status(400).send({ message: "Employee ID is required." });
+    }
+  
+    const query = `
+      SELECT 
+        sb.employee_id, sb.first_name, sb.last_name, sb.date_of_birth, sb.gender, sb.mobile_number, sb.email,
+        sa.department, sa.designation, sa.qualification, sa.specialization, sa.experience_years, sa.joining_date, 
+        sa.emergency_contact_name, sa.emergency_contact_number
+      FROM staffbasicinfo sb
+      LEFT JOIN staffadditionalinfo sa ON sb.employee_id = sa.employee_id
+      WHERE sb.employee_id = ?
+    `;
+  
+    try {
+      const result = await fetchQuery(query, [employeeID]);
+      if (result.length === 0) {
+        return res.status(404).send({ message: "Staff member not found." });
+      }
+      return res.status(200).send({ message: "Staff details fetched successfully", data: result[0] });
+    } catch (err) {
+      console.error("Database Error: ", err);
+      return res.status(500).send({ error: "Internal Server Error", details: err.message });
+    }
+  };
+  
+  // Get the total count of staff
+  module.exports.staffCount = async (req, res) => {
+    const query = "SELECT COUNT(*) AS totalStaff FROM staffbasicinfo";
+  
+    try {
+      const result = await fetchQuery(query);
+      return res.status(200).send({ message: "Total staff count fetched successfully", data: result[0] });
+    } catch (err) {
+      console.error("Database Error: ", err);
+      return res.status(500).send({ error: "Internal Server Error", details: err.message });
+    }
+  };
+  
+  

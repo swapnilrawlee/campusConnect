@@ -1,7 +1,12 @@
 const  connectDB = require("../config/mysqlConfig");
 const bcrypt = require("bcrypt");
 
-// Helper function for database queries
+const fetchQuery = async (query, params = []) => {
+  const connection = await connectDB;
+  const [result] = await connection.execute(query, params);
+  return result;
+};
+
 // Helper function for database queries
 const executeQuery = async (query, params, res, successMessage) => {
   const connection = await connectDB;
@@ -83,6 +88,7 @@ module.exports.skillsandlanguages = (req, res) => {
   executeQuery(query, [skills, languagesKnown,studentId], res, "Skills and languages created successfully");
 };
 
+
 // Fetch full student details
 module.exports.studentfulldetail = (req, res) => {
   const { studentId } = req.body;
@@ -109,4 +115,15 @@ module.exports.studentfulldetail = (req, res) => {
     }
     return res.status(200).send({ message: "Student details fetched successfully", data: result[0] });
   });
+};
+module.exports.studentCount = async (req, res) => {
+  const query = "SELECT COUNT(*) as totalStudents FROM studentprofile";
+
+  try {
+    const result = await fetchQuery(query);
+    return res.status(200).send({ message: "Total Students fetched successfully", data: result[0] });
+  } catch (err) {
+    console.error("Database Error: ", err);
+    return res.status(500).send({ error: "Internal Server Error", details: err.message });
+  }
 };
