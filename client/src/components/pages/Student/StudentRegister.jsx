@@ -56,7 +56,7 @@ const StudentRegister = () => {
       languagesKnown,
       skills,
     };
-    console.log(formData);
+    // console.log(formData);
   };
 
   return (

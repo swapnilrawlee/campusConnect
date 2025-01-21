@@ -5,8 +5,9 @@ const EventForm = ({ onAddEvent }) => {
 
   const handleSubmit = () => {
     if (newEvent.title && newEvent.type && newEvent.date) {
-      onAddEvent(newEvent); // Send event data to parent
-      setNewEvent({ title: '', type: '', date: '' }); // Reset form
+      setNewEvent({ title: '', type: '', date: '' }); 
+      console.log(newEvent);
+      
     } else {
       alert('Please fill all event details.');
     }

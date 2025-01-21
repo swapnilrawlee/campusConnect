@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import userDetailsContext from "../utils/CreateContext";
@@ -8,7 +8,7 @@ const HodLogin = () => {
   const [password, setPassword] = useState(""); // Password state
   const [role, setRole] = useState("hod"); // Role state
   const navigate = useNavigate();
-  const {setUserDetails} = useContext(userDetailsContext);
+  
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -18,13 +18,12 @@ const HodLogin = () => {
       uniqueId,
       password,
     });
-    setUserDetails(response.data.userDetails);
+    sessionStorage.setItem("userName", response.data.userDetails.first_name);
+
 
     try {
       if (response.status === 200) {
-        navigate(`/hod`, {
-          state: { userDetails: response.data.userDetails },
-        });
+        navigate(`/hod`);
       } else {
         navigate("/hodlogin");
       }

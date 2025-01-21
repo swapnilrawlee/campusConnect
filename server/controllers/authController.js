@@ -26,7 +26,6 @@ const generateToken = (user, role) => {
   const id = user.StudentID || user.EmployeeID; // Assuming your users have a StudentID or EmployeeID
   return jwt.sign({ id, name, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
-
 module.exports.Login = async (req, res) => {
   const { uniqueId, role, password } = req.body;
 
@@ -36,22 +35,21 @@ module.exports.Login = async (req, res) => {
 
   try {
     const connection = await connectDB;
-    let query = '';
+    let query = "";
     let params = [];
-    
-    if (role === "teacher") {
-      query = "SELECT * FROM staffbasicinfo WHERE role = ? AND employee_id = ?";
-      params = ["teacher", uniqueId];
-    } else if (role === "student") {
-      query = "SELECT * FROM studentprofile WHERE studentid = ?";
-      params = [uniqueId];
-    } else if (role === "hod") {
-      query = "SELECT * FROM staffbasicinfo WHERE role = ? AND employee_id = ?";
-      params = ["hod", uniqueId];
+
+    // Determine query based on role
+    if (role.toLowerCase() === "student") {
+      query = "SELECT * FROM studentprofile WHERE rollnumber = ?";
+      params = [uniqueId.trim()];
+    } else if (role.toLowerCase() === "teacher" || role.toLowerCase() === "hod") {
+      query = "SELECT * FROM staffbasicinfo WHERE LOWER(role) = LOWER(?) AND employee_id = ?";
+      params = [role.trim(), uniqueId.trim()];
     } else {
       return res.status(400).json({ message: "Invalid role" });
     }
 
+    // Execute the query
     const [rows] = await connection.execute(query, params);
 
     if (rows.length > 0) {
@@ -60,16 +58,25 @@ module.exports.Login = async (req, res) => {
 
       if (isPasswordValid) {
         const token = generateToken(user, role);
+        console.log("Login successful. Token generated.");
         const { password, ...userDetails } = user;
-        return res.status(200).json({ message: "Login successful", token: token,userDetails: userDetails });
+
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          userDetails,
+        });
       } else {
+        console.log("Invalid password provided.");
         return res.status(401).json({ message: "Invalid password" });
       }
     } else {
+      console.log("No matching user found for query.");
       return res.status(404).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error during login process:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+

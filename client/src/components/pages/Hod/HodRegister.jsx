@@ -74,7 +74,7 @@ const HodRegister = () => {
       languages,
       skills,
     };
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleReset = () => {

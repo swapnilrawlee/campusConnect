@@ -29,7 +29,7 @@ const StudentRegisterPage2 = () => {
       skills,
     };
     const finalData = { ...formDataPage1, ...formDataPage2 };
-    console.log(finalData);
+    // console.log(finalData);
     
 
     try {
@@ -47,6 +47,8 @@ const StudentRegisterPage2 = () => {
         CurrentSemester: finalData.CurrentSemester,
         enrollmentYear: finalData.enrollmentYear,
         permanentAddress: finalData.permanentAddress,
+        yearOfStudy:finalData.yearOfStudy,
+        currentSemester:finalData.currentSemester,
       });
 sessionStorage.setItem("studentid", response.data.studentid);
 const studentId = sessionStorage.getItem("studentid");
@@ -83,6 +85,7 @@ const studentId = sessionStorage.getItem("studentid");
         setEmergencyContactNumber("");
         setLanguagesKnown("");
         setSkills("");
+        navigate("/admin/student")
 
         
         localStorage.removeItem("formDataPage1");

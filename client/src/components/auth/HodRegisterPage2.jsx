@@ -17,18 +17,8 @@ const HodRegisterPage2 = () => {
   const handleSubmit = async () => {
     const formDataPage1 = JSON.parse(localStorage.getItem("formDataPage1"));
 
-    const formDataPage2 = {
-      department,
-      designation,
-      qualification,
-      specialization,
-      experienceYears,
-      joiningDate,
-      emergencyContactName,
-      emergencyContactNumber,
-    };
+console.log(formDataPage1);
 
-    // console.log(finalData); // Send this data to your backend
 
     try {
       // Post data to your backend
@@ -36,7 +26,7 @@ const HodRegisterPage2 = () => {
         "/staff/staffbasicinfo",
         formDataPage1
       );
-      console.log(response.data.employeeID);
+      // console.log(response.data.employeeID);
       sessionStorage.setItem("employeeID", response.data.employeeID);
       const employeeID = sessionStorage.getItem("employeeID");
 
@@ -51,15 +41,16 @@ const HodRegisterPage2 = () => {
         emergencyContactNumber,
         employeeID,
       });
-      console.log(response2.data);
+
+      if(response.statusCode === 200 &&response2.statusCode === 200) {
+        alert("Staff registered successfully!");
+        navigate("/admin/staff")
+            localStorage.removeItem("formDataPage1");
+
+      }
     } catch (error) {
       console.log(error.message);
     }
-
-    // Clear localStorage after submission
-    // localStorage.removeItem("formDataPage1");
-
-    // Navigate to a success page or next step
   };
 
   return (

@@ -26,6 +26,8 @@ const executeQuery = async (query, params, res, successMessage,extradata) => {
 };
 
 module.exports.staffbasicinfo = (req, res) => {
+  console.log(req.body);
+  
   const {
     employeeID,
     firstName,
@@ -34,6 +36,7 @@ module.exports.staffbasicinfo = (req, res) => {
     gender,
     mobileNumber,
     email,
+    role,
   } = req.body;
 
   const date = new Date(dateOfBirth);
@@ -49,8 +52,8 @@ module.exports.staffbasicinfo = (req, res) => {
 
   const query = `
     INSERT INTO staffbasicinfo
-    (employee_id, first_name,password, last_name, date_of_birth, gender, mobile_number, email)
-    VALUES (?,?,?,?,?,?,?,?)
+    (employee_id, first_name,password, last_name, date_of_birth, gender, mobile_number, email,role)
+    VALUES (?,?,?,?,?,?,?,?,?)
   `;
   
   
@@ -63,6 +66,7 @@ module.exports.staffbasicinfo = (req, res) => {
     gender,
     mobileNumber,
     email,
+    role
   ], res, "Staff basic info created successfully",{employeeID});
 };
 
@@ -168,5 +172,15 @@ module.exports.staffFullDetails = async (req, res) => {
       return res.status(500).send({ error: "Internal Server Error", details: err.message });
     }
   };
-  
+  module.exports.staffdetails = async (req, res) => {
+    const query = "SELECT * FROM staffbasicinfo";
+
+    try {
+      const result = await fetchQuery(query);
+      return res.status(200).send({ message: "Staff details fetched successfully", data: result });
+    } catch (err) {
+      console.error("Database Error: ", err);
+      return res.status(500).send({ error: "Internal Server Error", details: err.message });
+    }
+  }
   

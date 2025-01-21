@@ -11,7 +11,7 @@ const RegisterHOD = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ uniqueId, password }); // Log the unique ID and password
+    // console.log({ uniqueId, password }); // Log the unique ID and password
   };
 
   return (

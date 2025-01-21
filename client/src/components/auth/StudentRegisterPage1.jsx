@@ -64,7 +64,7 @@ const StudentRegisterPage1 = () => {
         <div className="flex justify-between w-full items-center gap-4">
           <i
             className="ri-arrow-left-line"
-            onClick={() => navigate("/admin/")}
+            onClick={() => navigate(-1)}
           ></i>
           <h1 className="text-2xl font-bold">Student Registration - Page 1</h1>
         </div>

@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 import StudentNavbar from './StudentNavbar'
 import axios from 'axios'
 import MyCalendar from '../../MyCalendar'
+import Calendar from 'react-calendar'
 
 const StudentHomepage = () => {
   const userdetails = JSON.parse(sessionStorage.getItem('userdetails'));
@@ -40,7 +41,7 @@ const StudentHomepage = () => {
       const response = await axios.get(
         "https://api.openweathermap.org/data/2.5/weather?q=mumbai&appid=1284ea18df9d31cafd3165c6b33bebe6&units=metric"
       );
-      console.log(response);
+      // console.log(response);
       
       setWeather(response.data);
     } catch (error) {
@@ -78,9 +79,8 @@ const StudentHomepage = () => {
 
 
       
-<div className='  w-[30%] '>
-  <MyCalendar/>
-  <h1>Upcoming Deadlines</h1>
+<div className=' w-[80%] '>
+<Calendar/>  <h1>Upcoming Deadlines</h1>
 <div>
 </div>
 </div>

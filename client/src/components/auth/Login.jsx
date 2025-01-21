@@ -29,37 +29,40 @@ const Login = () => {
       });
 
       const UserRole = response.data.userDetails.role;
-      const UserName =
-        response.data.userDetails.FirstName +
-        response.data.userDetails.LastName;
 
       // Storing the token
       sessionStorage.setItem("token", response.data.token);
+      const token = sessionStorage.getItem("token");
+      
+      if (token) {
+        switch (UserRole) {
+          case "Student":
+            // Ensure response contains student ID before navigating
+            if (response.data.userDetails.StudentID) {
+              sessionStorage.setItem(
+                "userdetails",
+                JSON.stringify(response.data.userDetails)
+              );
+              navigate(`/student/dashboard`);
+            } else {
+              alert("Student ID not found.");
+            }
+            break;
 
-      switch (UserRole) {
-        case "Student":
-          // Ensure response contains student ID before navigating
-          if (response.data.userDetails.StudentID) {
-            sessionStorage.setItem("userdetails", JSON.stringify(response.data.userDetails));
-            navigate(`/student/${response.data.userDetails.FirstName}`);
-          } else {
-            alert("Student ID not found.");
-          }
-          break;
+          case "teacher":
+            // Ensure response contains employee ID before navigating
+            if (response.data.userDetails.employee_id) {
+              navigate(`/teacher/dashboard`);
+            } else {
+              alert("Employee ID not found.");
+            }
+            break;
 
-        case "teacher":
-          // Ensure response contains employee ID before navigating
-          if (response.data.employeeID) {
-            navigate(`/teacher/${response.data.employeeID}`);
-          } else {
-            alert("Employee ID not found.");
-          }
-          break;
-
-        default:
-          // If an invalid role is selected
-          alert("Invalid role. Please select a valid role.");
-          break;
+          default:
+            // If an invalid role is selected
+            alert("Invalid role. Please select a valid role.");
+            break;
+        }
       }
     } catch (error) {
       console.error("Error during login:", error); // Error handling

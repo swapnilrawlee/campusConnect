@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import MyCalendar from "../../MyCalendar";
 import useAxiosFetch from "../../CustomHook/useAxiosFetch";
-import userDetailsContext from "../../utils/CreateContext";
 
 const HodHomepage = () => {
   const location = useLocation();
-  const {userDetails} = useContext(userDetailsContext);
-  console.log(userDetails);
-  
-
   const [task, setTask] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [priority, setPriority] = useState("green");
   const [calendarData, setCalendarData] = useState([]);
+  const [userName, setUserName] = useState("");
+
+  useEffect(()=>{
+    setUserName(sessionStorage.getItem("userName"));
+  },[]);
 
   const {
     data: studentData,
@@ -101,7 +101,7 @@ const HodHomepage = () => {
       <div className="min-h-screen p-10 w-[80%] flex-col flex gap-4">
         <div className="bg-[#511A1A] w-[80%] text-white rounded-lg p-5">
           <h1 className="text-2xl">
-            Welcome, {userDetails?.first_name}! {greeting}
+            Welcome, {userName}! {greeting}
           </h1>
           <p>{formattedTime}</p>
         </div>

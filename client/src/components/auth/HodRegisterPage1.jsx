@@ -12,6 +12,7 @@ const HodRegisterPage1 = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  
 
   const isFormValid =
     employeeID &&
@@ -32,6 +33,7 @@ const HodRegisterPage1 = () => {
       gender,
       mobileNumber,
       email,
+      role,
     };
     localStorage.setItem("formDataPage1", JSON.stringify(formData)); // Save to localStorage
     navigate("/admin/hodregisterpage2"); // Navigate to the next page

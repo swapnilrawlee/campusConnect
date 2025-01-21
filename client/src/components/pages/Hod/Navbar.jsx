@@ -11,7 +11,7 @@ const Navbar = () => {
       setName(UserName);
     }
   }, [UserName]);  
-  console.log(name);
+  // console.log(name);
   
   // Handle logout functionality
   const handleLogout = () => {
@@ -35,6 +35,16 @@ const Navbar = () => {
           Dashboard
         </NavLink>
 
+        <NavLink
+          to="/hod/subject"
+          className={({ isActive }) =>
+            isActive
+              ? "text-black bg-white px-4 py-2 rounded-md block"
+              : "text-white px-4 py-2 block"
+          }
+        >
+        Subject
+        </NavLink>
         <NavLink
           to="/hod/student-management"
           className={({ isActive }) =>
