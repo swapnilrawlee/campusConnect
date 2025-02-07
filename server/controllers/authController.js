@@ -22,9 +22,12 @@ module.exports.adminLogin = (req, res) => {
 };
 
 const generateToken = (user, role) => {
-  const name = user.FirstName + " " + user.LastName; // Or use any other name field structure
-  const id = user.StudentID || user.EmployeeID; // Assuming your users have a StudentID or EmployeeID
-  return jwt.sign({ id, name, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  
+  const name = user.first_name  || user.FirstName ; 
+  const id = user.RollNumber || user.employee_id;
+  
+  // Assuming your users have a StudentID or EmployeeID
+  return jwt.sign({ id , name, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 module.exports.Login = async (req, res) => {
   const { uniqueId, role, password } = req.body;
@@ -53,6 +56,7 @@ module.exports.Login = async (req, res) => {
     const [rows] = await connection.execute(query, params);
 
     if (rows.length > 0) {
+      
       const user = rows[0];
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -67,11 +71,9 @@ module.exports.Login = async (req, res) => {
           userDetails,
         });
       } else {
-        console.log("Invalid password provided.");
         return res.status(401).json({ message: "Invalid password" });
       }
     } else {
-      console.log("No matching user found for query.");
       return res.status(404).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
     }
   } catch (error) {

@@ -26,7 +26,6 @@ const executeQuery = async (query, params, res, successMessage,extradata) => {
 };
 
 module.exports.staffbasicinfo = (req, res) => {
-  console.log(req.body);
   
   const {
     employeeID,
@@ -45,8 +44,7 @@ module.exports.staffbasicinfo = (req, res) => {
   const yyyy = date.getFullYear();
   const plainPassword = `${dd}${mm}${yyyy}`; // Combine into `ddmmyyyy`
   const hashedPassword = bcrypt.hashSync(plainPassword, 10); // Salt rounds = 10
-  console.log(plainPassword);
-  console.log(hashedPassword);
+ 
   
 
 
@@ -71,7 +69,6 @@ module.exports.staffbasicinfo = (req, res) => {
 };
 
 module.exports.staffadditionalinfo = (req, res) => {
-    console.log("Received data:", req.body);
 
     // Destructure fields with fallback defaults
     const {
@@ -98,18 +95,7 @@ module.exports.staffadditionalinfo = (req, res) => {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    // Log parameters for debugging
-    console.log("Query Parameters:", {
-        employeeID,
-        department,
-        designation,
-        qualification,
-        specialization,
-        experienceYears,
-        joiningDate,
-        emergencyContactName,
-        emergencyContactNumber
-    });
+   
 
     // Execute query with parameters
     executeQuery(

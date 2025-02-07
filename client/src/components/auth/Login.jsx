@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import login from "../../assets/login.jpg"
 
 const Login = () => {
   const [role, setRole] = useState("");
@@ -72,10 +73,10 @@ const Login = () => {
 
   return (
     <div
-      className="main-container w-screen h-screen flex flex-col gap-8 justify-center items-center bg-cover bg-center p-10"
+      className="main-container w-screen h-screen flex flex-col  gap-8 justify-center items-center bg-cover bg-center p-10"
       style={{
         backgroundImage:
-          "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
+          `url(${login})`,
       }}
     >
       <div className="bg-white rounded-lg shadow-2xl shadow-black p-6 sm:w-1/4 flex flex-col gap-4 items-center justify-center">

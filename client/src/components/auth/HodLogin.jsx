@@ -1,7 +1,8 @@
 import React, {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import userDetailsContext from "../utils/CreateContext";
+import login from "../../assets/login.jpg"
+
 
 const HodLogin = () => {
   const [uniqueId, setUniqueId] = useState(""); // Unique ID state
@@ -18,7 +19,10 @@ const HodLogin = () => {
       uniqueId,
       password,
     });
+    console.log(response);
+    
     sessionStorage.setItem("userName", response.data.userDetails.first_name);
+    sessionStorage.setItem("token", response.data.token);
 
 
     try {
@@ -35,7 +39,8 @@ const HodLogin = () => {
       className="main-container w-screen h-screen flex flex-col gap-8 justify-center items-center bg-cover bg-center p-10"
       style={{
         backgroundImage:
-          "url(https://images.pexels.com/photos/2084249/pexels-photo-2084249.jpeg?auto=compress&cs=tinysrgb&w=600)",
+                  `url(${login})`,
+        
       }}
     >
       <div className="bg-white   rounded-lg shadow-2xl shadow-black p-6 sm:w-1/4 flex flex-col gap-4 items-center justify-center">

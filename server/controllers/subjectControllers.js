@@ -48,7 +48,6 @@ module.exports.CreateSubject = async function (req, res) {
 };
 module.exports.ShowSubject = async (req, res) => {
     const year = req.query.year;
-    console.log(year);
     
     const query = "SELECT subject_name ,stream,year,semester FROM subjects where year=?";
 

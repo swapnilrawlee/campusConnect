@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const EventForm = ({ onAddEvent }) => {
-  const [newEvent, setNewEvent] = useState({ title: '', type: '', date: '' });
+  const [newEvent, setNewEvent] = useState({ title: "", type: "", date: "" });
+  useEffect(() => {
+    console.log("refresh");
+  }, [newEvent]);
 
   const handleSubmit = () => {
-    if (newEvent.title && newEvent.type && newEvent.date) {
-      setNewEvent({ title: '', type: '', date: '' }); 
-      console.log(newEvent);
-      
-    } else {
-      alert('Please fill all event details.');
+    const trimmedTitle = newEvent.title.trim();
+    if (!trimmedTitle || !newEvent.type || !newEvent.date) {
+      alert("Please fill all event details.");
+      return;
     }
+
+    const formattedEvent = {
+      title: trimmedTitle,
+      type: newEvent.type,
+      event_date: new Date(newEvent.date).toISOString().split("T")[0], // Ensures correct format
+    };
+
+    onAddEvent(formattedEvent); // ✅ Send event to parent
+    setNewEvent({ title: "", type: "", date: "" }); // ✅ Reset form
   };
 
   return (
@@ -32,6 +42,15 @@ const EventForm = ({ onAddEvent }) => {
         <option value="Deadline">Deadline</option>
         <option value="Holiday">Holiday</option>
         <option value="Exam">Exam</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Seminar">Seminar</option>
+        <option value="Competition">Competition</option>
+        <option value="Placement">Placement</option>
+        <option value="Project Submission">Project Submission</option>
+        <option value="Field Trip">Field Trip</option>
+        <option value="Sports Event">Sports Event</option>
+        <option value="Cultural Fest">Cultural Fest</option>
+        <option value="Orientation">Orientation</option>
       </select>
       <input
         type="date"

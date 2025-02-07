@@ -11,12 +11,10 @@ const fetchQuery = async (query, params = []) => {
 const executeQuery = async (query, params, res, successMessage) => {
   const connection = await connectDB;
   try {
-    console.log("Executing Query: ", query);
-    console.log("With Params: ", params);
+
 
     const [result] = await connection.execute(query, params); // Execute the query
 
-    console.log("Query Result: ", result);
 
     if (result.affectedRows > 0) {
       // Retrieve the studentid (assuming it's the auto-increment field)
@@ -37,7 +35,6 @@ const executeQuery = async (query, params, res, successMessage) => {
 
 // Create student profile
 module.exports.studentprofile = async (req, res) => {
-  console.log(req.body);
   
   const {
     firstName,
@@ -123,7 +120,6 @@ module.exports.emergencycontact = (req, res) => {
     emergencyContactNumber,
     studentId,
   } = req.body;
-  console.log(req.body);
 
   const query = `
     INSERT INTO emergencycontact 
@@ -164,7 +160,6 @@ module.exports.skillsandlanguages = (req, res) => {
 module.exports.studentfulldetail = async (req, res) => {
   
   const rollNumber = req.query.rollNumber; // Retrieve rollNumber from query parameters
-  console.log(rollNumber);
 
   const query = `
     SELECT 
