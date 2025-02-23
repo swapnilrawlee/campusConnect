@@ -23,11 +23,13 @@ module.exports.adminLogin = (req, res) => {
 
 const generateToken = (user, role) => {
   
+  
   const name = user.first_name  || user.FirstName ; 
   const id = user.RollNumber || user.employee_id;
+  const Student_year = user.YearOfStudy
   
   // Assuming your users have a StudentID or EmployeeID
-  return jwt.sign({ id , name, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign({ id , name, role,Student_year }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 module.exports.Login = async (req, res) => {
   const { uniqueId, role, password } = req.body;

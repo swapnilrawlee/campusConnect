@@ -19,7 +19,7 @@ const StudentNavbar = () => {
     <nav className="flex flex-col w-[20%] min-h-screen bg-blue-600 p-4">
       <div className="flex  flex-col gap-10 ">
         <div className="text-white font-bold text-lg">CampusConnect</div>
-        <div className="flex flex-col text-sm  gap-4">
+        <div className="flex flex-col text-xl p-5   gap-5">
           <NavLink to="/student/dashboard" className={getActiveClass}>
             Dashboard
           </NavLink>
@@ -53,7 +53,7 @@ const StudentNavbar = () => {
           </NavLink>
           <button
             onClick={handleLogout}
-            className="text-white bg-red-600 p-2 rounded-lg mt-4 w-1/2 "
+            className="text-white bg-red-600 p-4 rounded-lg mt-4  "
           >
             Logout
           </button>

@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import axiosInstance from "./utils/axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);

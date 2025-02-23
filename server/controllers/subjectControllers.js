@@ -2,6 +2,7 @@ const connectDB = require("../config/mysqlConfig");
 const fetchQuery = async (query, params = []) => {
     const connection = await connectDB;
     const [result] = await connection.execute(query, params);
+    
     return result;
   };
 const executeQuery = async (query, params, res, successMessage) => {
@@ -47,15 +48,46 @@ module.exports.CreateSubject = async function (req, res) {
     }
 };
 module.exports.ShowSubject = async (req, res) => {
-    const year = req.query.year;
+try {
+    console.log(
+        req.query
+    );
+    
+    const year = req.query?.year;
     
     const query = "SELECT subject_name ,stream,year,semester FROM subjects where year=?";
 
     try {
         const subjects = await fetchQuery(query,[year]);
+
         return res.status(200).send({ message: "Subjects fetched successfully.", data: subjects });
     } catch (err) {
         console.error("ShowSubject Error:", err);
         return res.status(500).send({ error: "Internal Server Error", details: err.message });
     }
+} catch (error) {
+    console.log("something went wrong");
+    
+}
+};
+module.exports.studentSubject = async (req, res) => {
+try {
+
+    const stream = req.query?.stream;
+    const year = req.query?.year;
+    
+    const query = "SELECT subject_name ,stream,year,semester FROM subjects where stream=? AND year=?";
+
+    try {
+        const subjects = await fetchQuery(query,[stream,year]);
+
+        return res.status(200).send({ message: "Subjects fetched successfully.", data: subjects });
+    } catch (err) {
+        console.error("ShowSubject Error:", err);
+        return res.status(500).send({ error: "Internal Server Error", details: err.message });
+    }
+} catch (error) {
+    console.log("something went wrong");
+    
+}
 };

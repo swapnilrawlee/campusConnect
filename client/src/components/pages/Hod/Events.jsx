@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from './Navbar'
-import MyCalendar from '../../MyCalendar'
-import EventPage from '../../EventPage'
+import EventPage from '../../smallComponents/EventPage';
+import MyCalendar from '../../smallComponents/MyCalendar';
 
 const Events = () => {
     const [calendarData, setCalendarData] = useState([]);

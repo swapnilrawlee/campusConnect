@@ -3,7 +3,6 @@ import UsernameContext from '../../utils/CreateContext'
 import { NavLink } from 'react-router-dom'
 import StudentNavbar from './StudentNavbar'
 import axios from 'axios'
-import MyCalendar from '../../MyCalendar'
 import Calendar from 'react-calendar'
 
 const StudentHomepage = () => {

@@ -40,10 +40,10 @@ import Feedback from "../pages/Hod/Feedback";
 import Events from "../pages/Hod/Events";
 import Timetable from "../pages/Hod/Timetable";
 
-import NotFound from "../NotFound";
 import Studentprofile from "../pages/Hod/Studentprofile.jsx";
 import SubjectPage from "../pages/Hod/SubjectPage.jsx";
 import Communication from "../pages/Hod/Communication.jsx";
+import NotFound from "../smallComponents/NotFound.jsx";
 
 const Routing = () => {
   return (

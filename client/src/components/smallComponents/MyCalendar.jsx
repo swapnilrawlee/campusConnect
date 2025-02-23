@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import axiosInstance from "./utils/axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
 import "react-calendar/dist/Calendar.css";
-import EventForm from "./pages/Hod/EventForm";
+import EventForm from "../pages/Hod/EventForm";
 import SelectedDate from "./SelectedDate";
 
 const MyCalendar = () => {
@@ -82,8 +82,11 @@ const MyCalendar = () => {
           {showEventForm ? "Cancel" : "Add Event"}
         </button>
 
+    {/* event form for submiting events */}
         {showEventForm && <EventForm onAddEvent={handleAddEvent} />}
+      
       </div>
+      {/* selected date  of an events  */}
         <div className="w-full">
           <SelectedDate date={date} events={events} onDeleteEvent={handleDeleteEvent} />
         </div>

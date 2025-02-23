@@ -17,6 +17,8 @@ const Navbar = () => {
   const handleLogout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userdetails");
+    sessionStorage.removeItem("userName");
+
     navigate("/hodlogin");
   };
 

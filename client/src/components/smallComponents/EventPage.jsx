@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "./utils/axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
 
 // Event List component
 const EventList = ({ events, onDeleteEvent }) => {
@@ -48,25 +48,25 @@ const EventList = ({ events, onDeleteEvent }) => {
   );
 };
 
-// Main page component to fetch and display events
+
 const EventPage = () => {
-  const [events, setEvents] = useState([]); // State to hold all events
-  const [filteredEvents, setFilteredEvents] = useState([]); // State to hold filtered events
-  const [filterType, setFilterType] = useState(""); // Filter type (Meeting, Deadline, etc.)
-  const [sortOrder, setSortOrder] = useState(""); // Sorting order (asc, desc)
+  const [events, setEvents] = useState([]); 
+  const [filteredEvents, setFilteredEvents] = useState([]); 
+  const [filterType, setFilterType] = useState("");
+  const [sortOrder, setSortOrder] = useState(""); 
 
   // Fetch events from the backend API
   useEffect(() => {
     axiosInstance
-      .get("/events") // Adjust endpoint as necessary (e.g., '/events')
+      .get("/events") 
       .then((response) => {
-        setEvents(response.data); // Store the response data in state
-        setFilteredEvents(response.data); // Initialize filtered events to all events
+        setEvents(response.data); 
+        setFilteredEvents(response.data); 
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
       });
-  }, []); // Empty array means this effect runs once when the component mounts
+  }, []); 
 
   const handleDeleteEvent = (eventId) => {
     // Remove event from the local state after deleting
@@ -77,7 +77,7 @@ const EventPage = () => {
   const handleFilterEvents = (type) => {
     setFilterType(type);
     if (type === "") {
-      setFilteredEvents(events); // No filter selected, show all events
+      setFilteredEvents(events); 
     } else {
       const filtered = events.filter((event) => event.type === type); // Filter by type
       setFilteredEvents(filtered);
@@ -129,7 +129,7 @@ const EventPage = () => {
           onChange={(e) => handleSortEvents(e.target.value)}
           className="px-3 py-2 border rounded-md"
         >
-          <option value="">Sort by Date</option>
+          <option value="" disabled>Sort by Date</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>

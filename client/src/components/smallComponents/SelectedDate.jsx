@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axiosInstance from "./utils/axiosInstance"; // Ensure correct import
+import axiosInstance from "../utils/axiosInstance"; // Ensure correct import
 
 const SelectedDate = ({ date, events, onDeleteEvent }) => {
   useEffect(()=>{
