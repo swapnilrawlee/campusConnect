@@ -76,7 +76,7 @@ module.exports.Login = async (req, res) => {
         return res.status(401).json({ message: "Invalid password" });
       }
     } else {
-      return res.status(404).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
+      return res.status(400).send({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
     }
   } catch (error) {
     console.error("Error during login process:", error);

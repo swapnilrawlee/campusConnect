@@ -7,7 +7,9 @@ const StudentNavbar = () => {
 
   // Function to apply active link styling
   const getActiveClass = ({ isActive }) =>
-    isActive ? "bg-white p-2 rounded-lg w-1/2" : "text-white";
+    isActive
+      ? "bg-white px-3 py-2 rounded-lg flex items-center gap-2 text-sm text-black"
+      : "text-white px-3 py-2 flex items-center gap-2 text-sm";
 
   // Logout function to clear session storage and redirect to login
   const handleLogout = () => {
@@ -16,50 +18,49 @@ const StudentNavbar = () => {
   };
 
   return (
-    <nav className="flex flex-col w-[20%] min-h-screen bg-blue-600 p-4">
-      <div className="flex  flex-col gap-10 ">
-        <div className="text-white font-bold text-lg">CampusConnect</div>
-        <div className="flex flex-col text-xl p-5   gap-5">
-          <NavLink to="/student/dashboard" className={getActiveClass}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/student/profile" className={getActiveClass}>
-            Profile
-          </NavLink>
-          <NavLink to="/student/assignments" className={getActiveClass}>
-            Assignments
-          </NavLink>
-          <NavLink to="/student/courses" className={getActiveClass}>
-            Courses
-          </NavLink>
-          <NavLink to="/student/library" className={getActiveClass}>
-            Library
-          </NavLink>
-          <NavLink to="/student/feedback" className={getActiveClass}>
-            Feedback
-          </NavLink>
-
-          <NavLink to="/student/class-schedules" className={getActiveClass}>
-            Class Schedules
-          </NavLink>
-          <NavLink to="/student/assignment-tracker" className={getActiveClass}>
-            Assignment Tracker
-          </NavLink>
-          <NavLink to="/student/resources" className={getActiveClass}>
-            Resources
-          </NavLink>
-          <NavLink to="/student/communication" className={getActiveClass}>
-            Communication
-          </NavLink>
-          <button
-            onClick={handleLogout}
-            className="text-white bg-red-600 p-4 rounded-lg mt-4  "
-          >
-            Logout
-          </button>
-        </div>
+    <div className="min-h-screen w-[20%] bg-blue-800 p-6">
+      <h1 className="text-sm font-bold mb-6 text-white flex items-center gap-2">
+        <i className="ri-school-line text-base"></i> Campus Connect
+      </h1>
+      <div className="flex flex-col gap-3">
+        <NavLink to="/student/dashboard" className={getActiveClass}>
+          <i className="ri-dashboard-line text-base"></i> Dashboard
+        </NavLink>
+        <NavLink to="/student/profile" className={getActiveClass}>
+          <i className="ri-user-line text-base"></i> Profile
+        </NavLink>
+        <NavLink to="/student/assignments" className={getActiveClass}>
+          <i className="ri-task-line text-base"></i> Assignments
+        </NavLink>
+        <NavLink to="/student/deadlines" className={getActiveClass}>
+          <i className="ri-time-line text-base"></i> Deadlines
+        </NavLink>
+        <NavLink to="/student/communication" className={getActiveClass}>
+          <i className="ri-chat-3-line text-base"></i> Communication
+        </NavLink>
+        <NavLink to="/student/events" className={getActiveClass}>
+          <i className="ri-calendar-event-line text-base"></i> Events
+        </NavLink>
+        <NavLink to="/student/courses" className={getActiveClass}>
+          <i className="ri-book-line text-base"></i> Courses
+        </NavLink>
+        <NavLink to="/student/library" className={getActiveClass}>
+          <i className="ri-bookmark-line text-base"></i> Library
+        </NavLink>
+        <NavLink to="/student/feedback" className={getActiveClass}>
+          <i className="ri-feedback-line text-base"></i> Feedback
+        </NavLink>
       </div>
-    </nav>
+
+      <div className="flex mt-6 justify-end">
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-2 text-sm"
+        >
+          <i className="ri-logout-box-line text-base"></i> Logout
+        </button>
+      </div>
+    </div>
   );
 };
 

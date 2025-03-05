@@ -1,15 +1,15 @@
 import React from 'react';
 import Navbar from './Navbar';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Feedback = () => {
+  const navigate = useNavigate()
   const handleStudentFeedback = () => {
-    console.log("Navigating to Student Feedback form...");
-    // Add navigation or logic for Student Feedback
+      navigate("/hod/feedback/StudentFeedback")
   };
 
   const handleTeacherFeedback = () => {
-    console.log("Navigating to Teacher Feedback form...");
-    // Add navigation or logic for Teacher Feedback
+    navigate("/hod/feedback/TeacherFeedback")
   };
 
   return (

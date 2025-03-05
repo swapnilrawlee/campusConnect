@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom'
 import StudentNavbar from './StudentNavbar'
 import axios from 'axios'
 import Calendar from 'react-calendar'
+import MyCalendar from '../../smallComponents/MyCalendar'
+import EventPage from '../../smallComponents/EventPage'
 
 const StudentHomepage = () => {
   const userdetails = JSON.parse(sessionStorage.getItem('userdetails'));
@@ -49,9 +51,9 @@ const StudentHomepage = () => {
   };
 
   return (
-    <div className='w-screen min-h-screen  flex gap-4  '>
+    <div className='w-screen min-h-screen m-auto flex gap-4  '>
    <StudentNavbar/>
-    <div className='w-full px-6'>
+    <div className='w-[70%]  px-6'>
       <div className='flex justify-between  p-2 mt-10'>
         <div>
 
@@ -79,7 +81,7 @@ const StudentHomepage = () => {
 
       
 <div className=' w-[80%] '>
-<Calendar/>  <h1>Upcoming Deadlines</h1>
+
 <div>
 </div>
 </div>

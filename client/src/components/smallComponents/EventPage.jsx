@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { jwtDecode } from "jwt-decode";
 
 // Event List component
 const EventList = ({ events, onDeleteEvent }) => {
+  const [role, setRole] =useState("");
+
+
+
   const handleDelete = async (eventId) => {
     try {
+    
       // Send DELETE request to backend
       await axiosInstance.delete(`/events/${eventId}`);
       onDeleteEvent(eventId); // Update the UI after successful deletion
@@ -13,17 +19,26 @@ const EventList = ({ events, onDeleteEvent }) => {
     }
   };
 
+  useEffect(()=>{
+    const token = sessionStorage.getItem('token');
+    if (token) {
+     const decodeToken= jwtDecode(token)
+     setRole( decodeToken.role)
+  }},[])
+  
+
+
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 w-[70vw] bg-white rounded-lg capitalize shadow-md">
       <h2 className="text-xl font-bold mb-4">All Events</h2>
 
       {/* List of events */}
       {events.length > 0 ? (
-        <ul className="space-y-3">
+        <ul className="space-y-3 p-2 ">
           {events.map((event) => (
             <li
               key={event.id}
-              className="p-3 border rounded flex justify-between items-center bg-gray-100"
+              className="p-3 border rounded flex justify-between   items-center bg-gray-100"
             >
               <div>
                 <h3 className="font-semibold">{event.title}</h3>
@@ -32,12 +47,14 @@ const EventList = ({ events, onDeleteEvent }) => {
                   <span className="text-blue-500">{event.type}</span>
                 </p>
               </div>
+              {role !== "student" &&
               <button
-                onClick={() => handleDelete(event.id)} // Call delete function on click
-                className="bg-red-500 text-white px-3 py-1 rounded text-sm"
+              onClick={() => handleDelete(event.id)} // Call delete function on click
+              className="bg-red-500 text-white px-3 py-1 rounded text-sm"
               >
                 Delete
               </button>
+              }
             </li>
           ))}
         </ul>
@@ -100,9 +117,9 @@ const EventPage = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       {/* Sorting and Filtering */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 justify-end mb-4">
         <select
           value={filterType}
           onChange={(e) => handleFilterEvents(e.target.value)}

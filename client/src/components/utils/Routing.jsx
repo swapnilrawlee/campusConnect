@@ -20,7 +20,7 @@ import StudentCourses from "../pages/Student/StudentCourses.jsx";
 import StudentLibrary from "../pages/Student/StudentLibrary.jsx";
 import StudentFeedback from "../pages/Student/StudentFeedback.jsx";
 import StudentClassSchedules from "../pages/Student/StudentClassSchedules.jsx";
-import StudentAssignmentTracker from "../pages/Student/StudentAssignmentTracker.jsx";
+import StudentEventPage from "../pages/Student/StudentEventPage.jsx";
 import StudentResources from "../pages/Student/StudentResources.jsx";
 import StudentCommunication from "../pages/Student/StudentCommunication.jsx";
 
@@ -30,12 +30,14 @@ import TeacherAssignments from "../pages/Teacher/TeacherAssignments.jsx";
 import TeacherStudentMonitoring from "../pages/Teacher/TeacherStudentMonitoring.jsx";
 import TeacherCommunication from "../pages/Teacher/TeacherCommunication.jsx";
 import TeacherFeedbackSurveys from "../pages/Teacher/TeacherFeedbackSurveys.jsx";
+import TeacherEvents from "../pages/Teacher/TeacherEvents.jsx";
 
 import HodHomepage from "../pages/Hod/HodHomepage";
 import CreateSubject from "../pages/Hod/CreateSubject.jsx";
 import ShowSubject from "../pages/Hod/ShowSubject.jsx";
 import StudentManagement from "../pages/Hod/StudentManagement";
 import TeacherManagement from "../pages/Hod/TeacherManagement";
+import StudentFeedbacks from "../pages/Hod/StudentFeedbacks.jsx";
 import Feedback from "../pages/Hod/Feedback";
 import Events from "../pages/Hod/Events";
 import Timetable from "../pages/Hod/Timetable";
@@ -44,6 +46,8 @@ import Studentprofile from "../pages/Hod/Studentprofile.jsx";
 import SubjectPage from "../pages/Hod/SubjectPage.jsx";
 import Communication from "../pages/Hod/Communication.jsx";
 import NotFound from "../smallComponents/NotFound.jsx";
+import StudentDeadlines from "../pages/Student/StudentDeadlines.jsx";
+import TeacherFeedbacks from "../pages/Hod/TeacherFeedbacks.jsx";
 
 const Routing = () => {
   return (
@@ -72,10 +76,10 @@ const Routing = () => {
         <Route path="/student/profile" element={<StudentProfile />} />
         <Route path="/student/assignments" element={<StudentAssignments />} />
         <Route path="/student/courses" element={<StudentCourses />} />
+        <Route path="/student/deadlines" element={<StudentDeadlines />} />
         <Route path="/student/library" element={<StudentLibrary />} />
         <Route path="/student/feedback" element={<StudentFeedback />} />
-        <Route path="/student/class-schedules" element={<StudentClassSchedules />} />
-        <Route path="/student/assignment-tracker" element={<StudentAssignmentTracker />} />.jsx
+        <Route path="/student/events" element={<StudentEventPage />} />
         <Route path="/student/communication" element={<StudentCommunication />} />
 
         {/* Teacher Routes */}
@@ -84,11 +88,13 @@ const Routing = () => {
         <Route path="/teacher/class-management" element={<TeacherClassmanagement />} />
         <Route path="/teacher/assignments" element={<TeacherAssignments />} />
         <Route path="/teacher/student-monitoring" element={<TeacherStudentMonitoring />} />
+        <Route path="/teacher/events" element={<TeacherEvents />} />
         <Route path="/teacher/communication" element={<TeacherCommunication />} />
         <Route path="/teacher/feedback-surveys" element={<TeacherFeedbackSurveys />} />
 
         {/* HOD Routes */}
         <Route path="/hodlogin" element={<HodLogin />} />
+
         <Route path="/hod/communication" element={<Communication />} />
         <Route path="/hod" element={<HodHomepage />} />
         <Route path="/hod/subject" element={<SubjectPage />} />
@@ -98,6 +104,8 @@ const Routing = () => {
         <Route path="/hod/student-management" element={<StudentManagement />} />
         <Route path="/hod/teacher-management" element={<TeacherManagement />} />
         <Route path="/hod/feedback" element={<Feedback />} />
+        <Route path="//hod/feedback/StudentFeedback" element={<StudentFeedbacks />} />
+        <Route path="//hod/feedback/TeacherFeedback" element={<TeacherFeedbacks />} />
         <Route path="/hod/events" element={<Events />} />
         <Route path="/hod/timetable-schedule" element={<Timetable />} />
       </Routes>

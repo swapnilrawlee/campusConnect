@@ -6,7 +6,7 @@ const StudentManagement = () => {
   return (
     <div className="flex gap-4  w-screen min-h-screen">
       <Navbar />
-      <div className="w-[70%]">
+      <div className="w-[70%] flex justify-center items-center">
        <StudentmanagementNavbar/>
       </div>
     </div>

@@ -55,7 +55,7 @@ const StudentCourses = () => {
   return (
     <div className="w-screen min-h-screen flex gap-4">
       <StudentNavbar />
-      <div className="p-4 w-full">
+      <div className="p-4 w-[70%]">
         <h1 className="text-3xl font-bold mb-4">Student Courses Page</h1>
 
         {error && <p className="text-red-500">Error: {error}</p>}

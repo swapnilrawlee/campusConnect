@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import login from "../../assets/login.jpg"
+import login from "../../assets/login.jpg";
 
 const Login = () => {
   const [role, setRole] = useState("");
   const [uniqueId, setUniqueId] = useState(""); // Changed from rollNo to uniqueId
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   // Handle change for role select
@@ -19,8 +21,12 @@ const Login = () => {
     e.preventDefault();
     try {
       if (!role || !uniqueId || !password) {
-        alert("Please fill in all fields.");
+        setError(true);
+        setErrorMessage("Please fill in all fields.");
         return;
+      } else {
+        setError(false);
+        setErrorMessage("");
       }
 
       const response = await axiosInstance.post("/auth/login", {
@@ -29,54 +35,62 @@ const Login = () => {
         password,
       });
 
-      const UserRole = response.data.userDetails.role;
+      if (response.status == 200) {
+        
+        setError(false);
+        setErrorMessage("");
+        const UserRole = response.data.userDetails.role;
 
-      // Storing the token
-      sessionStorage.setItem("token", response.data.token);
-      const token = sessionStorage.getItem("token");
-      
-      if (token) {
-        switch (UserRole) {
-          case "Student":
-            // Ensure response contains student ID before navigating
-            if (response.data.userDetails.StudentID) {
-              sessionStorage.setItem(
-                "userdetails",
-                JSON.stringify(response.data.userDetails)
-              );
-              navigate(`/student/dashboard`);
-            } else {
-              alert("Student ID not found.");
-            }
-            break;
+        // Storing the token
+        sessionStorage.setItem("token", response.data.token);
+        const token = sessionStorage.getItem("token");
 
-          case "teacher":
-            // Ensure response contains employee ID before navigating
-            if (response.data.userDetails.employee_id) {
-              navigate(`/teacher/dashboard`);
-            } else {
-              alert("Employee ID not found.");
-            }
-            break;
+        if (token) {
+          switch (UserRole) {
+            case "Student":
+              // Ensure response contains student ID before navigating
+              if (response.data.userDetails.StudentID) {
+                sessionStorage.setItem(
+                  "userdetails",
+                  JSON.stringify(response.data.userDetails)
+                );
+                navigate(`/student/dashboard`);
+              } else {
+                alert("Student ID not found.");
+              }
+              break;
 
-          default:
-            // If an invalid role is selected
-            alert("Invalid role. Please select a valid role.");
-            break;
+            case "teacher":
+              // Ensure response contains employee ID before navigating
+              if (response.data.userDetails.employee_id) {
+                navigate(`/teacher/dashboard`);
+              } else {
+                alert("Employee ID not found.");
+              }
+              break;
+
+            default:
+              // If an invalid role is selected
+              alert("Invalid role. Please select a valid role.");
+              break;
+          }
         }
+      } else {
+        setError(true);
+        setErrorMessage(error.response.data.message);
       }
-    } catch (error) {
-      console.error("Error during login:", error); // Error handling
-      alert("An error occurred during login. Please try again later.");
-    }
+    }  catch (error) {
+      setError(true);
+      setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
+  }
+  
   };
 
   return (
     <div
       className="main-container w-screen h-screen flex flex-col  gap-8 justify-center items-center bg-cover bg-center p-10"
       style={{
-        backgroundImage:
-          `url(${login})`,
+        backgroundImage: `url(${login})`,
       }}
     >
       <div className="bg-white rounded-lg shadow-2xl shadow-black p-6 sm:w-1/4 flex flex-col gap-4 items-center justify-center">
@@ -124,6 +138,7 @@ const Login = () => {
               required
             />
           </div>
+          {error && <p className="text-red-500">{errorMessage}</p>}
 
           <button
             type="submit"

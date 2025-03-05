@@ -74,7 +74,7 @@ const HodHomepage = () => {
         </div>
 
         {/* Dashboard Panels */}
-        <div className="flex w-full gap-4 mx-auto">
+        <div className="flex w-[80%] gap-4 mx-auto">
           {/* Overview Panel */}
           <div className="border border-black w-[30%] p-4 min-h-[40%] flex flex-col gap-6 shadow-md shadow-black">
             <h1 className="text-xl font-extrabold font-serif">Overview Panel</h1>

@@ -63,15 +63,7 @@ const MyCalendar = () => {
 
 
       <div className="flex gap-3 w-full justify-evenly">
-        <div className="w-[40%]">
-          <Calendar
-            onChange={setDate}
-            value={date}
-            className="rounded-lg shadow-lg p-2"
-            tileContent={renderEvents}
-          />
-          
-        </div>
+       
         
    <div className="w-1/2">
    <div className="mb-4">
@@ -91,6 +83,15 @@ const MyCalendar = () => {
           <SelectedDate date={date} events={events} onDeleteEvent={handleDeleteEvent} />
         </div>
    </div>
+   <div className="w-[40%]">
+          <Calendar
+            onChange={setDate}
+            value={date}
+            className="rounded-lg shadow-lg p-2"
+            tileContent={renderEvents}
+          />
+          
+        </div>
       </div>
     </div>
   );

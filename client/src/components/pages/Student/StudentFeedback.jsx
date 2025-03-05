@@ -7,18 +7,21 @@ import FeedbackForm from "../../smallComponents/FeedbackForm"; // Import the new
 const StudentFeedback = () => {
   const [year, setYear] = useState(null);
   const [role, setRole] = useState(null);
-  const [feedback, setFeedback] = useState({ title: "", message: "", year: null, role: null });
+  const [name, setName] = useState("");
+  const [feedback, setFeedback] = useState({ title: "", message: "", year: null, role: null, name: "" });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Decode token and set user details
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
       try {
         const decodedData = jwtDecode(token);
-        if (decodedData?.Student_year && decodedData?.role) {          
+        if (decodedData?.Student_year && decodedData?.role && decodedData?.name) {
           setYear(decodedData.Student_year);
           setRole(decodedData.role);
+          setName(decodedData.name);
         }
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -26,10 +29,17 @@ const StudentFeedback = () => {
     }
   }, []);
 
+  // Update feedback when year, role, or name are set
   useEffect(() => {
-    setFeedback((prevFeedback) => ({ ...prevFeedback, year, role }));
-  }, [year, role]);
+    setFeedback((prevFeedback) => ({
+      ...prevFeedback,
+      year,
+      role,
+      name,  // Ensure name is included in feedback state
+    }));
+  }, [year, role, name]);
 
+  // Validate form inputs
   const validateForm = () => {
     let errors = {};
     if (!feedback.title.trim()) errors.title = "Title is required.";
@@ -38,6 +48,7 @@ const StudentFeedback = () => {
     return Object.keys(errors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -46,13 +57,15 @@ const StudentFeedback = () => {
       const response = await axiosInstance.post("/feedback", {
         title: feedback.title,
         message: feedback.message,
-        year: feedback.year,
-        role: feedback.role,
+        year: feedback.year, 
+        role: feedback.role, 
+        name: name, // Send name separately from state
       });
 
       if (response.status === 200) {
         setSuccessMessage("Feedback submitted successfully!");
-        setFeedback({ title: "", message: "", year, role });
+        setFeedback({ title: "", message: "", year, role, name }); // Retain year, role, and name after reset
+        setErrors({});
       } else {
         setErrors({ form: "Failed to submit feedback" });
       }
