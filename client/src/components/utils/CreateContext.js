@@ -1,7 +1,6 @@
-// UsernameContext.js
 import { createContext } from "react";
 
 // Creating context
-const UsernameContext = createContext();
+const userDetailsContext = createContext();
 
-export default UsernameContext;
+export default userDetailsContext;
