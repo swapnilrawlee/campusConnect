@@ -11,6 +11,7 @@ const eventRoutes = require('./routes/eventRoutes.js');
 const attendanceRoutes = require('./routes/attendanceRoutes.js');
 const feedbackRoutes = require('./routes/feedbackRoutes.js');
 const communicationRoutes = require('./routes/communicationRoutes.js');
+const leaveRoutes = require('./routes/leaveRoutes.js');
 const http = require('http');
 const socketIo = require('socket.io');
 
@@ -50,6 +51,7 @@ app.use('/api', apiRoutes);
 app.use('/task', taskRoutes);
 app.use('/events', eventRoutes);
 app.use('/attendance', attendanceRoutes);
+app.use('/leave', leaveRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/communication', communicationRoutes);
 

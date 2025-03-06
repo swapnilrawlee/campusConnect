@@ -39,6 +39,9 @@ const TeacherNavbar = () => {
         <NavLink to="/teacher/events" className={getActiveClass}>
           <i className="ri-calendar-event-line text-base"></i> Events
         </NavLink>
+        <NavLink to="/teacher/leaverequest" className={getActiveClass}>
+          <i className="ri-feedback-line text-base"></i> Leave Request
+        </NavLink>
         <NavLink to="/teacher/feedback-surveys" className={getActiveClass}>
           <i className="ri-feedback-line text-base"></i> Feedback & Surveys
         </NavLink>

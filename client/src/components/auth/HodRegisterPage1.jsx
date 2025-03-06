@@ -51,7 +51,7 @@ const HodRegisterPage1 = () => {
         <div className="flex justify-between w-full items-center gap-4">
           <i
             className="ri-arrow-left-line text-2xl cursor-pointer hover:text-gray-600"
-            onClick={() => navigate("/admin")}
+            onClick={() => navigate(-1)}
             title="Go back"
 
           ></i>

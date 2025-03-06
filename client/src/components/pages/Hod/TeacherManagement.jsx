@@ -9,7 +9,7 @@ const TeacherManagement = () => {
       <nav className="mt-2 flex flex-col gap-4 justify-center items-center w-[70%] rounded-lg">
       <NavLink
         className="p-2 rounded-lg bg-blue-800 w-1/2 text-white flex justify-center hover:bg-blue-900 hover:scale-95"
-        to={"/admin/teacher"}
+        to={"/admin/staff"}
       >
         Create Teacher Profile
       </NavLink>

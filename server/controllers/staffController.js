@@ -118,7 +118,12 @@ module.exports.staffadditionalinfo = (req, res) => {
 
 // Fetch full details of a staff member
 module.exports.staffFullDetails = async (req, res) => {
-    const { employeeID } = req.body;
+  
+    const  employeeID  =  req.query.employeeID;
+    
+   
+    
+    
   
     if (!employeeID) {
       return res.status(400).send({ message: "Employee ID is required." });
