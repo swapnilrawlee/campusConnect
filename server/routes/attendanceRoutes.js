@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
 const connectDB = require('../config/mysqlConfig');
 
 // Function to execute a query that modifies data (INSERT, UPDATE, DELETE)
@@ -25,6 +24,7 @@ const fetchQuery = async (query, params = []) => {
     try {
         const connection = await connectDB;
         const [result] = await connection.execute(query, params);
+        
         return result;
     } catch (err) {
         console.error("Database Fetch Error:", err);
@@ -32,34 +32,54 @@ const fetchQuery = async (query, params = []) => {
     }
 };
 
-// Get all attendance records
+// Get students based on YearOfStudy and stream
 router.get('/', async (req, res) => {
-  const query = `
-    SELECT a.AttendanceID, a.RollNumber, sp.FirstName, sp.LastName, a.YearOfStudy, 
-           a.CurrentSemester, a.AttendanceDate, a.Status
-    FROM attendance a
-    JOIN studentprofile sp ON a.RollNumber = sp.RollNumber;
-  `;
-  try {
-    const results = await fetchQuery(query);
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch attendance records", details: err.message });
+    console.log("Fetching student records...");
+
+    const { yearOfStudy, stream } = req.query;
+    console.log(
+      `Fetching students from YearOfStudy ${yearOfStudy} and stream ${stream}...`
+    );
+
+const year = String(yearOfStudy || "").trim();
+const streamValue = String(stream || "").trim();
+    
+
+    // Validate required parameters
+    if (!yearOfStudy || !stream) {
+        return res.status(400).json({ error: "yearOfStudy and stream are required parameters" });
+    }
+
+    const query = `
+        SELECT * FROM studentprofile WHERE yearOfStudy = ? AND stream = ?
+    `;
+
+    try {
+        const results = await fetchQuery(query, [year, streamValue]);
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch student records", details: err.message });
+    }
+});
+router.post('/', async (req, res) => {
+  console.log("Marking attendance...");
+
+  const { RollNumber, Date, Status, YearOfStudy, Stream } = req.body;
+
+  // Validate request body
+  if (!RollNumber || !Date || !Status || !YearOfStudy || !Stream) {
+      return res.status(400).json({ error: "All fields are required" });
   }
+
+  const query = `
+      INSERT INTO Attendance (RollNumber, Date, Status, YearOfStudy, Stream)
+      VALUES (?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE Status = VALUES(Status);
+  `;
+
+  await executeQuery(query, [RollNumber, Date, Status, YearOfStudy, Stream], res, "Attendance marked successfully");
 });
 
-// Mark attendance (Insert record into attendance table)
-router.post('/', async (req, res) => {
-  const { RollNumber, YearOfStudy, CurrentSemester, AttendanceDate, Status } = req.body;
-  const query = `
-    INSERT INTO attendance (RollNumber, YearOfStudy, CurrentSemester, AttendanceDate, Status)
-    VALUES (?, ?, ?, ?, ?);
-  `;
-  try {
-    await executeQuery(query, [RollNumber, YearOfStudy, CurrentSemester, AttendanceDate, Status], res, 'Attendance marked successfully');
-  } catch (err) {
-    res.status(500).json({ error: "Failed to mark attendance", details: err.message });
-  }
-});
+
 
 module.exports = router;

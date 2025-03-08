@@ -12,6 +12,8 @@ const attendanceRoutes = require('./routes/attendanceRoutes.js');
 const feedbackRoutes = require('./routes/feedbackRoutes.js');
 const communicationRoutes = require('./routes/communicationRoutes.js');
 const leaveRoutes = require('./routes/leaveRoutes.js');
+const timetableRoutes = require('./routes/timetableRoutes.js');
+const notesRoutes = require('./routes/notesRoutes.js');
 const http = require('http');
 const socketIo = require('socket.io');
 
@@ -52,8 +54,10 @@ app.use('/task', taskRoutes);
 app.use('/events', eventRoutes);
 app.use('/attendance', attendanceRoutes);
 app.use('/leave', leaveRoutes);
+app.use('/timetable', timetableRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/communication', communicationRoutes);
+app.use('/notes', notesRoutes);
 
 // Start server
 server.listen(3000, () => {

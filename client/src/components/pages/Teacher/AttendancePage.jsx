@@ -1,204 +1,138 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../utils/axiosInstance"; // Adjust path if needed
+import axiosInstance from "../../utils/axiosInstance";
 
-// AttendancePage component to manage attendance display and creation
 const AttendancePage = () => {
-  const [attendance, setAttendance] = useState([]);
-  
-  
-  
-  const [newAttendance, setNewAttendance] = useState({
-    RollNumber: "",
+  const [students, setStudents] = useState([]);
+  const [filters, setFilters] = useState({
     YearOfStudy: "",
-    CurrentSemester: "",
-    AttendanceDate: "",
-    Status: "Present", // Default status
+    Stream: "",
   });
+  const [attendance, setAttendance] = useState({});
 
-  // Fetch attendance records from backend
   useEffect(() => {
-    axiosInstance
-      .get("/attendance")
-      .then((response) => {
-        setAttendance(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching attendance:", error);
-      });
-  }, []);
+    if (filters.YearOfStudy && filters.Stream) {
+      fetchStudents();
+    }
+  }, [filters]);
 
-  // Handle form input changes for new attendance
-  const handleInputChange = (e) => {
+  const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setNewAttendance((prevState) => ({
+    setFilters((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  // Handle marking new attendance
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    axiosInstance
-      .post("/attendance", newAttendance)
-      .then((response) => {
-        // Update the attendance list after marking attendance
-        setAttendance((prevAttendance) => [
-          ...prevAttendance,
-          { ...newAttendance, AttendanceID: Date.now() }, // Adding a mock ID for the new attendance
-        ]);
-        alert(response.data.message);
-      })
-      .catch((error) => {
-        console.error("Error marking attendance:", error);
+  const fetchStudents = async () => {
+    try {
+      const response = await axiosInstance.get(`/attendance`, {
+        params: {
+          yearOfStudy: filters.YearOfStudy,
+          stream: filters.Stream,
+        },
       });
+      setStudents(response.data);
+
+      // Initialize attendance state with false (unchecked)
+      const initialAttendance = {};
+      response.data.forEach(student => {
+        initialAttendance[student.RollNumber] = false;
+      });
+      setAttendance(initialAttendance);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
+
+  const handleCheckboxChange = (rollNumber) => {
+    setAttendance((prevAttendance) => ({
+      ...prevAttendance,
+      [rollNumber]: !prevAttendance[rollNumber], // Toggle the checkbox state
+    }));
+  };
+
+  const handleSubmitAttendance = async () => {
+    const todayDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
+
+    const attendanceData = students.map((student) => ({
+      RollNumber: student.RollNumber,
+      Date: todayDate,
+      Status: attendance[student.RollNumber] ? "Present" : "Absent",
+      YearOfStudy: student.YearOfStudy,
+      Stream: student.stream,
+    }));
+
+    try {
+      await Promise.all(
+        attendanceData.map((data) =>
+          axiosInstance.post("/attendance", data)
+        )
+      );
+      alert("Attendance marked successfully!");
+    } catch (error) {
+      console.error("Error marking attendance:", error);
+      alert("Failed to mark attendance.");
+    }
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Attendance Records</h1>
+      <h1 className="text-xl font-bold mb-4">Mark Attendance</h1>
 
-      {/* Display Attendance Records */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold">All Attendance</h2>
-        {attendance.length > 0 ? (
-          <ul className="space-y-2">
-            {attendance.map((record) => (
-              <li
-                key={record.AttendanceID}
-                className="p-3 border rounded bg-gray-100 flex justify-between"
-              >
-                <div>
-                  <p>
-                    <strong>
-                      {record.FirstName} {record.LastName}
-                    </strong>
-                    <br />
-                    {record.YearOfStudy} - Semester {record.CurrentSemester}
-                    <br />
-                    Date: {new Date(record.AttendanceDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <span
-                  className={`${
-                    record.Status === "Present"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  } font-semibold`}
-                >
-                  {record.Status}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No attendance records found.</p>
-        )}
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <select name="YearOfStudy" onChange={handleFilterChange} required className="p-2 border rounded w-full">
+          <option value="">Select Year</option>
+          <option value="1st Year">1st Year</option>
+          <option value="2nd Year">2nd Year</option>
+          <option value="3rd Year">3rd Year</option>
+        </select>
+        <select name="Stream" onChange={handleFilterChange} required className="p-2 border rounded w-full">
+          <option value="">Select Stream</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Information Technology">Information Technology</option>
+        </select>
       </div>
 
-      {/* Mark Attendance Form */}
-      <div>
-        <h2 className="text-lg font-semibold">Mark Attendance</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block font-semibold" htmlFor="RollNumber">
-              Roll Number:
-            </label>
-            <input
-              type="text"
-              id="RollNumber"
-              name="RollNumber"
-              value={newAttendance.RollNumber}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-semibold" htmlFor="YearOfStudy">
-              Year of Study:
-            </label>
-            <select
-              id="YearOfStudy"
-              name="YearOfStudy"
-              value={newAttendance.YearOfStudy}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-              required
-            >
-              <option value="">Select Year</option>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block font-semibold" htmlFor="CurrentSemester">
-              Current Semester:
-            </label>
-            <select
-              id="CurrentSemester"
-              name="CurrentSemester"
-              value={newAttendance.CurrentSemester}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-              required
-            >
-              <option value="">Select Semester</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block font-semibold" htmlFor="AttendanceDate">
-              Attendance Date:
-            </label>
-            <input
-              type="date"
-              id="AttendanceDate"
-              name="AttendanceDate"
-              value={newAttendance.AttendanceDate}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-semibold" htmlFor="Status">
-              Status:
-            </label>
-            <select
-              id="Status"
-              name="Status"
-              value={newAttendance.Status}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-            >
-              <option value="Present">Present</option>
-              <option value="Absent">Absent</option>
-            </select>
-          </div>
-
+      {students.length > 0 ? (
+        <div>
+          <table className="w-full border-collapse border border-gray-300 mt-4">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border p-2">Roll Number</th>
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Year</th>
+                <th className="border p-2">Stream</th>
+                <th className="border p-2">Attendance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.RollNumber} className="border">
+                  <td className="border p-2">{student.RollNumber}</td>
+                  <td className="border p-2">{student.FirstName} {student.LastName}</td>
+                  <td className="border p-2">{student.YearOfStudy}</td>
+                  <td className="border p-2">{student.stream}</td>
+                  <td className="border p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={attendance[student.RollNumber] || false}
+                      onChange={() => handleCheckboxChange(student.RollNumber)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+            onClick={handleSubmitAttendance}
+            className="mt-4 p-2 bg-blue-500 text-white rounded"
           >
-            Mark Attendance
+            Submit Attendance
           </button>
-        </form>
-      </div>
+        </div>
+      ) : (
+        <p>No students found.</p>
+      )}
     </div>
   );
 };
